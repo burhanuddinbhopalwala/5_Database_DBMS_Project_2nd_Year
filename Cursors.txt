@@ -1,0 +1,172 @@
+--
+-- Cursor1
+-- Printing All the username from mst_user
+--
+DROP PROCEDURE IF EXISTS cursor1;
+DELIMITER $$
+CREATE PROCEDURE cursor1()
+BEGIN
+DECLARE unm varchar(30);
+DECLARE ueml varchar(30);
+DECLARE exit_loop BOOLEAN;
+DECLARE user_cursor1 CURSOR FOR
+SELECT username,email FROM mst_user;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET exit_loop = TRUE;
+OPEN user_cursor1;
+user_loop: LOOP
+FETCH  user_cursor1 INTO unm,ueml;
+select unm,ueml;
+IF exit_loop THEN
+CLOSE user_cursor1;
+LEAVE user_loop;
+END IF;
+END LOOP user_loop;
+END $$
+DELIMITER ;
+call cursor1();
+-- 2 different cursor for unm and ueml  is also right but above way is better;
+
+--
+-- Cursor 2
+-- Increasing All test_ques by 10;
+--
+DROP PROCEDURE IF EXISTS cursor2;
+DELIMITER $$
+CREATE PROCEDURE cursor2()
+BEGIN
+DECLARE a int;
+DECLARE exit_loop BOOLEAN;
+DECLARE testque_cursor CURSOR FOR
+SELECT total_que FROM mst_test;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET exit_loop = TRUE;
+OPEN testque_cursor;
+testque_loop: LOOP
+FETCH  testque_cursor INTO a;
+update mst_test set total_que=a+10;
+IF exit_loop THEN
+CLOSE testque_cursor;
+LEAVE testque_loop;
+END IF;
+END LOOP testque_loop;
+END $$
+DELIMITER ;
+call cursor2();
+
+
+--
+-- Cursor 3
+-- Display the ques whose testid is either 11/12 or sub_id=1 ;
+DROP PROCEDURE IF EXISTS cursor3;
+DELIMITER $$
+CREATE PROCEDURE cursor3()
+BEGIN
+DECLARE tid INT;
+DECLARE ques VARCHAR (150);
+DECLARE a1 VARCHAR (75);
+DECLARE a2 VARCHAR (75);
+DECLARE a3 VARCHAR (75);
+DECLARE a4 VARCHAR (75);
+DECLARE ans INT;
+DECLARE ques_cursor CURSOR 
+FOR SELECT test_id,que_desc,ans1,ans2,ans3,ans4,true_ans FROM mst_question;
+OPEN ques_cursor;
+read_loop: LOOP
+FETCH ques_cursor INTO tid,ques,a1,a2,a3,a4,ans;
+IF tid=21 THEN
+CLOSE ques_cursor;
+LEAVE read_loop;
+ELSEIF ans=1 THEN
+select ques,a1;
+ELSEIF ans=2 THEN
+select ques,a2;
+ELSEIF ans=3 THEN
+select ques,a3;
+ELSEIF ans=4 THEN
+select ques,a4;
+END IF;
+END LOOP read_loop;
+END $$
+DELIMITER ;
+call cursor3();
+
+
+-- 
+-- Cursor4
+-- Printing all login and test_id for which score>=2 and score<=5 from mst_result table ;
+DROP PROCEDURE IF EXISTS cursor4;
+DELIMITER $$
+CREATE PROCEDURE cursor4()
+BEGIN
+DECLARE lgn varchar(20);
+DECLARE tid int(5);
+DECLARE exit_loop BOOLEAN;
+DECLARE uscore_cursor CURSOR FOR
+SELECT login,test_id FROM mst_result where score BETWEEN 2 AND 5;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET exit_loop = TRUE;
+OPEN uscore_cursor;
+user_loop: LOOP
+FETCH  uscore_cursor INTO lgn,tid;
+select lgn,tid;
+IF exit_loop THEN
+CLOSE uscore_cursor;
+LEAVE user_loop;
+END IF;
+END LOOP user_loop;
+END $$
+DELIMITER ;
+call cursor4();
+
+--
+-- Cursor5
+-- Printing all the sub_id and sub_name of all the subjects whose sub_name starting from 'S%'
+DROP PROCEDURE IF EXISTS cursor5;
+DELIMITER $$
+CREATE PROCEDURE cursor5()
+BEGIN
+DECLARE sid int(5);
+DECLARE sub varchar(25);
+DECLARE exit_loop BOOLEAN;
+DECLARE usub_cursor CURSOR FOR
+SELECT sub_id,sub_name FROM mst_subject where sub_name LIKE 'C%';
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET exit_loop = TRUE;
+OPEN usub_cursor;
+user_loop: LOOP
+FETCH  usub_cursor INTO sid,sub;
+select sid,sub;
+IF exit_loop THEN
+CLOSE usub_cursor;
+LEAVE user_loop;
+END IF;
+END LOOP user_loop;
+END $$
+DELIMITER ;
+call cursor5();
+
+--
+-- Cursor6
+-- INSERT cursor
+DROP PROCEDURE IF EXISTS cursor6;
+DELIMITER $$
+CREATE PROCEDURE cursor6()
+BEGIN
+DECLARE qid INT;
+DECLARE ques_cursor CURSOR 
+FOR SELECT que_id FROM mst_question;
+OPEN ques_cursor;
+read_loop: LOOP
+FETCH ques_cursor INTO qid;
+IF qid=211 THEN
+CLOSE ques_cursor;
+LEAVE read_loop;
+IF qid=115 THEN
+set qid=116;
+INSERT INTO mst_question VALUES(116, 11, 'How many data types are there in C ?', '8', '7', '6', '5', 3); 
+END IF;
+END LOOP read_loop;
+END $$
+DELIMITER ;
+call cursor6(); 
+--
+-- End 
+--
+

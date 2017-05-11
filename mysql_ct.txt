@@ -1,0 +1,181 @@
+-- Creating Database;
+DROP DATABASE IF EXISTS quiz2;
+CREATE DATABASE quiz2;
+USE quiz2;
+
+-- 
+-- Table structure for table mst_user
+-- 
+
+CREATE TABLE mst_user (
+  user_id int(5) NOT NULL auto_increment,
+  login varchar(20) default NULL,
+  pass varchar(20) default NULL,
+  username varchar(30) default NULL,
+  address varchar(50) default NULL,
+  country varchar(10) default NULL,
+  zip int(6) default NULL,
+  phone int(10) default NULL,
+  email varchar(30) default NULL,
+  PRIMARY KEY  (user_id)
+)  AUTO_INCREMENT=6;
+
+-- 
+-- Dumping data for table mst_user
+-- 
+
+INSERT INTO  mst_user VALUES (1, 'burhan', 'burhan', 'burhanuddin', 'Indore', 'India',458965,9826852214, 'burhan221194@gmail.com');
+INSERT INTO  mst_user VALUES (2, 'hussain', 'hussain', 'hussain', 'badribagh', 'India',458958,9977872473, 'hussain@yahoo.com');
+INSERT INTO  mst_user VALUES (3, 'aryan', 'aryan', 'aryan', 'Agra', 'India', 478931,5846987426, 'aryan@gmail.com');
+INSERT INTO  mst_user VALUES (4, 'dhaval', 'dhaval', 'a', 'a', 'India', 458621,9826478421, 'dhaval@yahoo.com');
+INSERT INTO  mst_user VALUES (5, 'sachin', 'sachin', 'sachin', 'Anand vihar', 'India',452687 ,8305215121, 'sachin@gmail.com');
+--
+-- End of Table1
+-- 
+-- 
+-- Table structure for table mst_subject
+-- 
+
+CREATE TABLE mst_subject (
+  sub_id int(5) NOT NULL auto_increment,
+  sub_name varchar(25) default NULL,
+  PRIMARY KEY  (sub_id)
+) AUTO_INCREMENT=6;
+
+-- 
+-- Dumping data for table mst_subject
+-- 
+
+INSERT INTO mst_subject VALUES (1, 'C/C++');
+INSERT INTO mst_subject VALUES (2, 'Computer Fundamental');
+INSERT INTO mst_subject VALUES (3, 'php');
+INSERT INTO mst_subject VALUES (4, 'SQL');
+INSERT INTO mst_subject VALUES (5, 'Java');
+
+-- 
+-- End of Table2
+--
+
+-- 
+-- Table structure for table mst_test
+-- 
+
+CREATE TABLE mst_test (
+  test_id int(5) NOT NULL auto_increment,
+  sub_id int(5) default NULL,
+  test_name varchar(30) default NULL,
+  total_que varchar(15) default NULL,
+  PRIMARY KEY  (test_id),
+  foreign key(sub_id) references mst_subject(sub_id)
+) AUTO_INCREMENT=61 ;
+
+INSERT INTO mst_test VALUES (11, 1, 'C', '5');
+INSERT INTO mst_test VALUES (12, 1, 'C++', '5');
+INSERT INTO mst_test VALUES (21, 2, 'General Question', '5');
+INSERT INTO mst_test VALUES (31, 3, 'Basic php', '5');
+INSERT INTO mst_test VALUES (41, 4, 'Basic SQL', '5');
+INSERT INTO mst_test VALUES (51, 5, 'Core Java', '5');
+INSERT INTO mst_test VALUES (52, 5, 'Advanced Java', '5');
+
+--
+-- End of Table3
+--
+
+
+
+CREATE TABLE mst_question (
+  que_id int(5) NOT NULL auto_increment,
+  test_id int(5) default NULL,
+  que_desc varchar(150) default NULL,
+  ans1 varchar(75) default NULL,
+  ans2 varchar(75) default NULL,
+  ans3 varchar(75) default NULL,
+  ans4 varchar(75) default NULL,
+  true_ans int(1) default NULL,
+  PRIMARY KEY  (que_id),
+  foreign key(test_id) references mst_test(test_id)
+)AUTO_INCREMENT=611 ;
+
+INSERT INTO mst_question VALUES (111, 11, 'How many data types are there in C ?', '8', '7', '6', '5', 3);
+INSERT INTO mst_question VALUES (112, 11, 'Range of integer type of data ?', '-32768 to 32767', '123-133', '152 to 258', '-78954 to 32564', 1);
+INSERT INTO mst_question VALUES (113, 11, 'getchar() is used to get ?', 'integer', 'string', 'character', 'print', 3);
+INSERT INTO mst_question VALUES (114, 11, 'gets() is used to get?', 'number', 'character', 'string', 'integer', 3);
+INSERT INTO mst_question VALUES (115, 11, 'short cut key to save is _', 'f4', 'f9', 'f2', 'f1', 3);
+INSERT INTO mst_question VALUES (121, 12, 'Which feature of C++ allow reusing of code?', 'Polymorphism', 'Inheritance', 'Encapsulation', 'Data Hiding', 2);
+INSERT INTO mst_question VALUES (122, 12, 'The standard input stream, which refers to the keyboard, is called?', 'cin', 'cout', 'stin', 'stout', 1);
+INSERT INTO mst_question VALUES (123, 12, 'A Destructor takes?', 'No argument', '1 argument', '2 Argument', 'Any Argument', 1);
+INSERT INTO mst_question VALUES (124, 12, 'Which of the following advantages we lose by using Multiple Inheritance?', 'Data Binding', 'Polymorphism', 'Both a and b', 'None', 3);
+INSERT INTO mst_question VALUES (125, 12, 'A Constructor is called whenever_ ?', 'an object is declared', 'an object is used', 'an class is declared', 'an class is used', 1);
+INSERT INTO mst_question VALUES (211, 21, 'RAM Stands for', 'Random Access Memory', 'Random accelerated Memory', 'Random Access Machenism', 'Random Accurace Mantan', 1);
+INSERT INTO mst_question VALUES (212, 21, 'PC Stands for', 'pocket computer', 'personal computer', 'phisycal computer', 'personal card', 2);
+INSERT INTO mst_question VALUES (213, 21, 'Personal Computer are the type of computer', 'super computer', 'mini computer', 'micro computer', 'mainframe computer', 3);
+INSERT INTO mst_question VALUES (214, 21, 'floppy disk is the type of memory', 'magnatic & secondarymain memory', 'main memory', 'o primary', 'none of the above', 1);
+INSERT INTO mst_question VALUES (215, 21, 'keybord is the type of device', 'input', 'pointing', 'output', 'sound', 1);
+INSERT INTO mst_question VALUES (311, 31, 'How do u write "Hello world" in PHP?', 'echo "Hello world";', 'document.write("Hello world");', '"Hello world";', 'printf("Hello world");', 1);
+INSERT INTO mst_question VALUES (312, 31, 'what does PHP stand for?', 'personal hypertext  processor', 'private home page', 'personal home page', 'PHP:Hypertext preprocessor', 4);
+INSERT INTO mst_question VALUES (313, 31, 'All variable in PHP start with which symbol?', '!', '$', '&', '#', 2);
+INSERT INTO mst_question VALUES (314, 31, 'what is the correct way to end a PHP  statement?', '</php>', '.', ';', 'new line', 3);
+INSERT INTO mst_question VALUES (315, 31, 'The PHP syntax is most similar to?', 'VB script', 'Java script', 'Perl ', 'c#', 2);
+INSERT INTO mst_question VALUES (411, 41, 'What does SQL stand for?', 'Structured Question Language', 'Strong Question Language', 'Structured Query Language', 'String Query Language', 3);
+INSERT INTO mst_question VALUES (412, 41, 'Which is not a DML command?', 'Delete', 'Select', 'Update', 'None', 4);
+INSERT INTO mst_question VALUES (413, 41, 'Which is not a type of SQL statement?', 'Data Manipulation Language(DML)', 'Data Defination Language(DDL)', 'Data Control Language(DCL)', 'Data Communication Language(DCL)', 4);
+INSERT INTO mst_question VALUES (414, 41, 'TRUNCATE  statement in SQL is an?', 'DML statement', 'DDL statement', 'DCL statement', 'DSL statement', 2);
+INSERT INTO mst_question VALUES (415, 41, 'What are the different events in Triggers?', 'Define | Create', 'Drop | Comment', 'Insert | Update | Delete', 'Select | Commit', 3);
+-- java remaining
+-- End of Table 4
+--
+
+
+CREATE TABLE mst_useranswer (
+  sess_id varchar(80) default NULL,
+  test_id int(11) default NULL,
+  que_des varchar(200) default NULL,
+  ans1 varchar(50) default NULL,
+  ans2 varchar(50) default NULL,
+  ans3 varchar(50) default NULL,
+  ans4 varchar(50) default NULL,
+  true_ans int(11) default NULL,
+  your_ans int(11) default NULL,
+   foreign key(test_id) references mst_test(test_id)
+);
+INSERT INTO mst_useranswer VALUES ('0f38cfc0215a52cb3897e828dc3f450d', 21, 'RAM Stands for', 'Random Access Memory', 'Random accelerated Memory', 'Random Access Machenism', 'Random Accurace Mantan', 1, 3);
+INSERT INTO mst_useranswer VALUES ('0f38cfc0215a52cb3897e828dc3f450d', 21, 'PC Stands for', 'pocket computer', 'personal computer', 'phisycal computer', 'personal card', 2, 4);
+INSERT INTO mst_useranswer VALUES ('0f38cfc0215a52cb3897e828dc3f450d', 21, 'Personal Computer are the type of computer', 'super computer', 'mini computer', 'micro computer', 'mainframe computer', 3, 3);
+INSERT INTO mst_useranswer VALUES ('0f38cfc0215a52cb3897e828dc3f450d', 21, 'floppy disk is the type of memory', 'magnatic & secondarymain memory', 'main memory', 'o primary', 'none of the above', 1, 3);
+INSERT INTO mst_useranswer VALUES ('0f38cfc0215a52cb3897e828dc3f450d', 21, 'keybord is the type of device', 'input', 'pointing', 'output', 'sound', 1, 2);
+
+
+
+--
+--  End of Table 5
+--
+
+
+CREATE TABLE mst_result (
+  login varchar(20) default NULL,
+  test_id int(5) default NULL,
+  test_date date default NULL,
+  score int(3) default NULL,
+  foreign key(test_id) references mst_test(test_id)
+) ;
+
+INSERT INTO mst_result VALUES ('burhan',11, '2014-11-24', 1);
+INSERT INTO mst_result VALUES ('aryan',12, '2014-11-28', 2);
+INSERT INTO mst_result VALUES ('sachin',21, '2014-11-30', 3);
+INSERT INTO mst_result VALUES ('dhaval',11, '2014-11-24', 4);
+INSERT INTO mst_result VALUES ('hussain',12, '2014-11-28', 5);
+--
+-- End of Table 6
+--
+
+CREATE TABLE mst_admin (
+  loginid varchar(20) default NULL,
+  pass varchar(20) default NULL,
+  PRIMARY KEY  (loginid)
+) ;
+
+INSERT INTO mst_admin VALUES ('admin', 'admin');
+
+--
+-- End of Table 7
+--

@@ -1,0 +1,66 @@
+-- Stored Procedure For Creating a table ;
+-- Stored Procedure 1;
+-- Dont Use Quiz2 Database Here Because Table Here is Already Exists 
+DROP DATABASE IF EXISTS trial; 
+CREATE DATABASE trial;
+USE trial;
+DELIMITER $$
+DROP PROCEDURE IF EXISTS subadd;
+CREATE PROCEDURE subadd()
+BEGIN
+DECLARE i int DEFAULT 1;
+CREATE TABLE subject (
+  sub_id int(5) NOT NULL auto_increment,
+  sub_name varchar(25) default NULL,
+  PRIMARY KEY  (sub_id)
+) AUTO_INCREMENT=1;
+WHILE (i<6) DO
+IF i=1 THEN
+INSERT INTO subject VALUES(i,"C/C++");
+ELSEIF i=2 THEN
+INSERT INTO subject VALUES(i,"Computer Fundatamental");
+ELSEIF i=3 THEN
+INSERT INTO subject VALUES(i,"php");
+ELSEIF i=4 THEN
+INSERT INTO subject VALUES(i,"SQL");
+ELSEIF i=5 THEN
+INSERT INTO subject VALUES(i,"Java");
+END IF;
+set i=i+1;
+END WHILE;
+END $$
+DELIMITER ;
+call subadd();
+
+
+-- Stored Procedure 2
+-- Select Statement in Stored Procedure
+-- Selecting user_info from mst_user
+USE quiz2;
+DROP PROCEDURE IF EXISTS uinfo;
+DELIMITER $$
+CREATE PROCEDURE uinfo(
+IN uid int(5),
+OUT lgn varchar(20),
+OUT pwd varchar(20),
+OUT uname varchar(30),
+OUT adrs varchar(50),
+OUT cntry varchar(10),
+OUT zp int(6),
+OUT phn int(10),
+OUT eml varchar(30))
+BEGIN
+select login,pass,username,address,country,zip,phone,email INTO
+lgn,pwd,uname,adrs,cntry,zp,phn,eml
+FROM mst_user WHERE user_id=uid;
+END $$
+DELIMITER ;
+call uinfo(1,@lgn,@pwd,@uname,@adrs,@cntry,@zp,@phn,@eml);
+SELECT @lgn as lgn,
+@pwd as pwd,
+@uname as uname,
+@adrs as adrs,
+@cntry as cntry,
+@zp as zp,
+@eml as eml ;
+--

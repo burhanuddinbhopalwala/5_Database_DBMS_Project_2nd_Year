@@ -1,0 +1,68 @@
+USE quiz2;
+-- Trigger1
+-- BEFORE DELETE TRIGGER
+DELIMITER $$
+DROP TRIGGER IF EXISTS dmstsubject;
+CREATE TRIGGER dmstsubject BEFORE DELETE ON mst_subject FOR EACH ROW
+BEGIN
+delete from mst_test where sub_id=old.sub_id;
+END $$
+DELIMITER ;
+delete from mst_subject where sub_id=5;
+select * from mst_test;
+
+-- Trigger2
+-- BEFORE DELETE TRIGGER
+DELIMITER $$
+DROP TRIGGER IF EXISTS dmsttest1;
+CREATE TRIGGER dmsttest1 BEFORE DELETE ON mst_test FOR EACH ROW
+BEGIN
+delete from mst_question where test_id  IN(select test_id from mst_test where sub_id=old.sub_id );
+END $$
+DELIMITER ;
+delete from mst_subject where sub_id=4;
+select * from mst_question;
+
+-- Trigger3
+-- BEFORE DELETE TRIGGER
+DELIMITER $$
+DROP TRIGGER IF EXISTS dmsttest2;
+CREATE TRIGGER dmsttest2 BEFORE DELETE ON mst_test FOR EACH ROW
+BEGIN
+delete from mst_result where test_id  IN(select test_id from mst_test where sub_id=old.sub_id );
+END $$
+DELIMITER ;
+delete from mst_subject where sub_id=3;
+select * from mst_result;
+-- This version of mysql doesn't support multiple version of Triggers on same table with same action time and event .
+
+-- Trigger4
+-- AFTER INSERT TRIGGER
+DELIMITER $$
+DROP TRIGGER IF EXISTS imstsubject ;
+CREATE TRIGGER imstsubject AFTER INSERT ON mst_subject 
+FOR EACH ROW
+ BEGIN
+insert into mst_test set test_id=((new.sub_id)*10 + 1),
+   sub_id=new.sub_id,
+   test_name=new.sub_name,
+   total_que=5;
+END $$
+DELIMITER ; 
+INSERT INTO mst_subject values(6,"Networking");
+select * from mst_test;
+
+-- Trigger5
+-- BEFORE UPDATE TRIGGER
+DELIMITER $$
+DROP TRIGGER IF EXISTS upd_check ; 
+CREATE TRIGGER upd_check BEFORE UPDATE ON mst_subject
+FOR EACH ROW
+BEGIN
+IF NEW.sub_id <3 THEN
+SET NEW.sub_name = "LOTUS";
+ELSE
+SET NEW.sub_name = "AJAX";
+END IF;
+END //
+DELIMITER ;
